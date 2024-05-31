@@ -7,32 +7,45 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
+    <header class="header">
         <h1>Tornoak</h1>
         <img src="Irudiak/Logo_color.jpg" alt="Descripción de la imagen" class="header-img">
     </header>
 
     <main>
-        <nav class="main-menu">
-            <ul>
-                <li>
-                    <a href="index.html">Hasiera</a>
-                </li>
-                <li>
-                    <a href="#">Fresadorak</a>
-                </li>
-                <li>
-                    <a href="#">Produktu kimikoak</a>
-                </li>
-            </ul>
-        </nav>
+        <ul>
+            <?php
+            // Establecer la conexión a la base de datos (usando la misma conexión que en las páginas anteriores)
+            $servername = "localhost";
+            $username = "tu_usuario";
+            $password = "tu_contraseña";
+            $database = "tu_base_de_datos";
 
-        <section>
-            <h2>Tornoak</h2>
-            <p>Informazio guztia Goierri eskolako tornuetan erabiltzen denari buruz hemen aurki dezakezu.</p>
-        </section>
+            $conn = new mysqli($servername, $username, $password, $database);
+
+            // Verificar la conexión
+            if ($conn->connect_error) {
+                die("La conexión ha fallado: " . $conn->connect_error);
+            }
+
+            // Consulta SQL para obtener los elementos cuyo campo "izena" comienza con la letra "t" de la tabla "makinak"
+            $sql = "SELECT * FROM makinak WHERE izena LIKE 't%'";
+            $result = $conn->query($sql);
+
+            // Mostrar los elementos en una lista
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<li>" . $row["izena"] . "</li>";
+                }
+            } else {
+                echo "<li>No hay elementos en la tabla que comiencen con la letra 't'.</li>";
+            }
+
+            // Cerrar la conexión
+            $conn->close();
+            ?>
+        </ul>
     </main>
-
-    <script src="script.js"></script>
 </body>
 </html>
+
